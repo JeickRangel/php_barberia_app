@@ -73,23 +73,24 @@ switch ($method) {
         break;
 
     case 'DELETE': // 🔹 Eliminar disponibilidad
-        $data = json_decode(file_get_contents("php://input"), true);
-        $id = $data['id_disponibilidad'] ?? null;
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['id_disponibilidad'] ?? null;
 
-        if (!$id) {
-            echo json_encode(["status" => "ERROR", "message" => "id_disponibilidad requerido"]);
-            exit();
-        }
+    if (!$id) {
+        echo json_encode(["status" => "ERROR", "message" => "id_disponibilidad requerido"]);
+        exit();
+    }
 
-        $stmt = $conn->prepare("DELETE FROM disponibilidad WHERE id_disponibilidad=?");
-        $stmt->bind_param("i", $id);
+    $stmt = $conn->prepare("DELETE FROM disponibilidad WHERE id_disponibilidad=?");
+    $stmt->bind_param("i", $id);
 
-        if ($stmt->execute()) {
-            echo json_encode(["status" => "OK", "message" => "Disponibilidad eliminada"]);
-        } else {
-            echo json_encode(["status" => "ERROR", "message" => $stmt->error]);
-        }
-        break;
+    if ($stmt->execute()) {
+        echo json_encode(["status" => "OK", "message" => "Disponibilidad eliminada"]);
+    } else {
+        echo json_encode(["status" => "ERROR", "message" => $stmt->error]);
+    }
+    break;
+
 
     default:
         http_response_code(405);
